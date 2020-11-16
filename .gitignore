@@ -1,4 +1,5 @@
 backup/
+results/
 **/figures/
 
 *.svg
@@ -6,3 +7,4 @@ backup/
 *.png
 *.tex
 
+.ipynb_checkpoints
