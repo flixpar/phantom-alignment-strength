@@ -12,8 +12,7 @@ procs = [("fparker9@ugrad$(x).cs.jhu.edu", workers_per_proc) for x in procs]
 addprocs(procs, max_parallel=100, tunnel=true, topology=:master_worker, enable_threaded_blas=true)
 println("Running on $(nworkers()) workers.")
 
-@everywhere push!(LOAD_PATH, "/home/fparker9/FuzzySGM")
-@everywhere import FuzzySGM
+@everywhere import GraphMatching
 
 @everywhere using DataFrames, CSV
 @everywhere using Random, Distributions
@@ -49,7 +48,7 @@ end
 		_results
 	end
 
-	folder, file_id = FuzzySGM.get_output_folder()
+	folder, file_id = get_output_folder()
 	results = DataFrame(results_raw)
 	CSV.write(joinpath(folder, "simulatons-$(file_id).csv"), results)
 
@@ -57,14 +56,14 @@ end
 end;
 
 @everywhere function simulate_erdosrenyi(n, m, p, ρe; maxiter::Int=20, exp_name=missing)
-	graphA, graphB, matching = FuzzySGM.generate_erdosrenyi(n+m, p, ρe)
-	graphA, graphB, matching = FuzzySGM.seed_random(graphA, graphB, m)
+	graphA, graphB, matching = GraphMatching.generate_erdosrenyi(n+m, p, ρe)
+	graphA, graphB, matching = GraphMatching.permute_seeded(graphA, graphB, m)
 
-	sgm_time = @elapsed P, est_matching, it = FuzzySGM.sgm(graphA, graphB, m, maxiter=maxiter, returniter=true)
+	sgm_time = @elapsed P, est_matching, it = GraphMatching.sgm(graphA, graphB, m, maxiter=maxiter, returniter=true)
 
-	match_r    = FuzzySGM.match_ratio(matching, est_matching, m)
-	algn_str_1 = FuzzySGM.alignment_strength(graphA, graphB, P, m)
-	algn_str_2 = FuzzySGM.alignment_strength(graphA, graphB, P, 0)
+	match_r    = GraphMatching.match_ratio(matching, est_matching, m)
+	algn_str_1 = GraphMatching.alignment_strength(graphA, graphB, P, m)
+	algn_str_2 = GraphMatching.alignment_strength(graphA, graphB, P, 0)
 
 	results = (
 		match_ratio = match_r,
@@ -77,7 +76,15 @@ end;
 	return results
 end
 
+@everywhere function get_output_folder()
+	d = Dates.format(Dates.now(), "yyyy-mm-dd")
+	t = Dates.format(Dates.now(), "yyyy-mm-dd-HH-MM-SS")
+	basepath = normpath(joinpath(pathof(@__FILE__), "../", "results"))
+	outpath = joinpath(basepath, d)
+	mkpath(outpath)
+	return outpath, t
+end
+
 if abspath(PROGRAM_FILE) == @__FILE__
 	run_simulations_43()
 end
-
