@@ -1,8 +1,11 @@
 using Glob
 
-infolder  = "figures/tex/"
-outfolder = "figures/tex_cvt/"
-pdffolder = "figures/pdf/"
+print("Experiment path: ")
+expfolder = readline()
+
+infolder  = joinpath(expfolder, "figures/tex/")
+outfolder = joinpath(expfolder, "figures/tex_cvt/")
+pdffolder = joinpath(expfolder, "figures/pdf/")
 
 function main()
 
