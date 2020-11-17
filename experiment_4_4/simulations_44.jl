@@ -157,7 +157,7 @@ end
 		p_matrix = zeros(Float64, N, N)
 		p_means = zeros(Float64, N, N)
 
-		for (dist11, dist12, dist22) in dist_list
+		for (dist_idx, (dist11, dist12, dist22)) in enumerate(dist_list)
 			Λ = [
 				dist11 dist12;
 				dist12 dist22;
@@ -186,7 +186,7 @@ end
 
 			r = simulate_bernoulli(p_matrix, m, ρe, exp_name="44c")
 			r = merge((
-				N = N, n = n, m = m, μ = μ,
+				N = N, n = n, m = m, μ = μ, dist_idx = dist_idx,
 				ρe = ρe, ρh = ρh, ρt = ρt, σ = σ,
 				ρh_mod = ρh_mod, ρt_mod = ρt_mod, σ2_mod = σ2_mod,
 			), r)
