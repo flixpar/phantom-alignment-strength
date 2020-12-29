@@ -48,6 +48,7 @@ function compile_figure(figname, folder="")
 		"Real Data",
 		"Real",
 		"Erdos-Renyi",
+		"Parameter",
 	]
 
 	if figname == "exp42_fig1_v3"
