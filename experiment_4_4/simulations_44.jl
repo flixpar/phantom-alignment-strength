@@ -28,7 +28,7 @@ end
 
 @everywhere function simulations_44a(iterations)
 	n = 1000
-	m = 250
+	m = 40
 	N = n + m
 
 	b1 = round(Int, 0.2 * N)
@@ -77,7 +77,6 @@ end
 
 @everywhere function simulations_44b(iterations)
 	n = 1000
-	# m = 250
 	m = 40
 	N = n + m
 
@@ -133,7 +132,7 @@ end
 
 @everywhere function simulations_44c(iterations)
 	n = 1000
-	m = 250
+	m = 40
 	N = n + m
 
 	b1 = round(Int, 0.2 * N)
