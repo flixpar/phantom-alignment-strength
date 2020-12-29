@@ -31,9 +31,8 @@ end
 	m = 40
 	N = n + m
 
-	b1 = round(Int, 0.2 * N)
-	b2 = N - b1
-	b = vcat(1 * ones(Int, b1), 2 * ones(Int, b2))
+	group_probs = [0.2, 0.8]
+	b_dist = Categorical(group_probs)
 
 	Λ = [
 		0.3 0.4
@@ -46,6 +45,8 @@ end
 	params = collect(Iterators.product(iter_list, ρe_list))
 	println("Running $(length(params)) graph matches...")
 	results_raw = @showprogress @distributed (vcat) for (it, ρe) in params
+		b = rand(b_dist, N)
+
 		p_matrix = zeros(Float64, N, N)
 		for i in 1:N
 			for j in i+1:N
@@ -80,9 +81,8 @@ end
 	m = 40
 	N = n + m
 
-	b1 = round(Int, 0.2 * N)
-	b2 = N - b1
-	b = vcat(1 * ones(Int, b1), 2 * ones(Int, b2))
+	group_probs = [0.2, 0.8]
+	b_dist = Categorical(group_probs)
 
 	Λ = [
 		0.3 0.4
@@ -90,12 +90,13 @@ end
 	]
 
 	iter_list = 1:iterations
-	# ρe_list = 0:0.025:1
 	ρe_list = 0:0.005:1
 
 	params = collect(Iterators.product(iter_list, ρe_list))
 	println("Running $(length(params)) graph matches...")
 	results_raw = @showprogress @distributed (vcat) for (it, ρe) in params
+		b = rand(b_dist, N)
+
 		p_matrix = zeros(Float64, N, N)
 		for i in 1:N
 			for j in i+1:N
@@ -135,9 +136,8 @@ end
 	m = 40
 	N = n + m
 
-	b1 = round(Int, 0.2 * N)
-	b2 = N - b1
-	b = vcat(1 * ones(Int, b1), 2 * ones(Int, b2))
+	group_probs = [0.2, 0.8]
+	b_dist = Categorical(group_probs)
 
 	ϵ = 1e-3
 
@@ -161,6 +161,8 @@ end
 				dist11 dist12;
 				dist12 dist22;
 			]
+
+			b = rand(b_dist, N)
 
 			fill!(p_matrix, 0.0)
 			fill!(p_means, 0.0)
