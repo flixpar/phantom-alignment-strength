@@ -8,3 +8,5 @@ results/
 *.tex
 
 .ipynb_checkpoints
+
+data/
