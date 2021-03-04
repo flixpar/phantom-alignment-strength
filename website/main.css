@@ -1,0 +1,5 @@
+body {
+	font-family: Helvetica, sans-serif;
+	max-width: min(800px, 90%);
+	margin: auto;
+}

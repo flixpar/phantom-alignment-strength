@@ -10,3 +10,7 @@ results/
 .ipynb_checkpoints
 
 data/
+
+results-final/
+data-final/
+figures-final/
